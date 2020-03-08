@@ -1,6 +1,6 @@
 //쓰기
 var Web3 = require("web3");
-var lightwallet = require("eth-lightwallet");
+var lightwallet = require("../../my_modules/eth-lightwallet");
 var HookedWeb3Provider = require("hooked-web3-provider");
 
 var fs = require('fs')
@@ -34,6 +34,7 @@ const web3 = async (req,res,next)=>{
 
           req.web3 = await web3;
           req.address = await address
+          console.log("##########")
           next()
 
     }catch(err){

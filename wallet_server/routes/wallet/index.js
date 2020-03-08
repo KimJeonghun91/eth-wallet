@@ -9,4 +9,8 @@ router.post('/newWallet',wallet.newWallet)
 router.use('/getBalance',web3Middleware)
 router.post('/getBalance',wallet.getBalance)
 
+
+router.use('/sendEth',web3Middleware)
+router.post('/sendEth',wallet.sendEth)
+
 module.exports = router

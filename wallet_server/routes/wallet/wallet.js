@@ -1,13 +1,6 @@
 
 
 var lightwallet = require("../../my_modules/eth-lightwallet");
-var fs = require('fs')
-var util = require('util');
-var readFile = util.promisify(fs.readFile)
-
-var Web3 = require('web3')
-var HookedWeb3Provider = require('hooked-web3-provider')
-
 
 exports.newMnemonic = async (req, res) => {
     var mnemonic;
@@ -53,15 +46,35 @@ exports.newWallet = async (req, res) => {
 
 exports.getBalance = async (req, res) => {
 
-    var web3 = req.web3
-    var eth= 0;
+    var web3 = req.web3;
+    var eth = 0;
+    var address = req.address
 
-    await web3.eth.getBalance((req.address.toString()), async (err, data) => {
+    await web3.eth.getBalance(address.toString(), async (err, data) => {
         if (err) console.log(err);
-
         eth = data.toString()
-    
-      });
-      res.json({code:1,eth:eth})
+    });
+    res.json({ code: 1, eth: eth })
+
+}
+
+exports.sendEth = async (req, res) => {
+
+    var web3 = req.web3;
+    var fromAddress = req.address;
+    var toAddress = req.body.toAddress
+    var gasPrice = req.gasPrice;
+    var value = req.body.value;
+
+    web3.eth.sendTransaction({
+        from: fromAddress.toString(),
+        to: toAddress.toString(),
+        value: value,
+        gasPrice: gasPrice,
+        gas: 21000
+    }, function (err, txhash) {
+        console.log(txhash)
+        res.json({ code: 1, txhash })
+    });
 
 }
