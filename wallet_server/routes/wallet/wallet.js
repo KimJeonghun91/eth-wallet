@@ -1,6 +1,5 @@
-
-
 var lightwallet = require("../../my_modules/eth-lightwallet");
+
 
 exports.newMnemonic = async (req, res) => {
     var mnemonic;
@@ -10,6 +9,11 @@ exports.newMnemonic = async (req, res) => {
     } catch (err) {
         console.log(err)
     }
+}
+
+exports.getPK = async (req, res) => {
+    await console.log(req.pk)
+    res.send(req.pk)
 }
 
 exports.newWallet = async (req, res) => {
@@ -27,7 +31,6 @@ exports.newWallet = async (req, res) => {
                 ks.keyFromPassword(password, function (err, pwDerivedKey) {
                     ks.generateNewAddress(pwDerivedKey, 1);
 
-                    var address = (ks.getAddresses()).toString();
                     var keystore = ks.serialize();
 
                     fs.writeFile('wallet.json', keystore, function (err, data) {
@@ -58,23 +61,42 @@ exports.getBalance = async (req, res) => {
 
 }
 
+// exports.sendEth = async (req, res) => {
+
+//     var web3 = req.web3;
+//     var fromAddress = req.address;
+//     var toAddress = req.body.toAddress
+//     var gasPrice = req.gasPrice;
+//     var value = req.body.value;
+
+//     web3.eth.sendTransaction({
+//         from: fromAddress.toString(),
+//         to: toAddress.toString(),
+//         value: value,
+//         gasPrice: gasPrice,
+//         gas: 21000
+//     }, function (err, txhash) {
+//         console.log(txhash)
+//         res.json({ code: 1, txhash })
+//     });
+
+// }
+
 exports.sendEth = async (req, res) => {
 
-    var web3 = req.web3;
-    var fromAddress = req.address;
-    var toAddress = req.body.toAddress
-    var gasPrice = req.gasPrice;
-    var value = req.body.value;
+    var gasPrice = req.gas
 
-    web3.eth.sendTransaction({
-        from: fromAddress.toString(),
-        to: toAddress.toString(),
-        value: value,
-        gasPrice: gasPrice,
-        gas: 21000
-    }, function (err, txhash) {
-        console.log(txhash)
-        res.json({ code: 1, txhash })
-    });
+    await req.eth.sendTransaction({
+        from:"0x1fb05d9972c52e9513daa5a1bff0ae26da40206c",
+        to:"0xEC4188020fF2683F983CCce94a7F197D98336727",
+        gas:50000,
+        gasPrice:gasPrice*1.5,
+        data:"0x",
+        value:100000000000000,
+    },function(err,tx){
+        if(err)
+        console.log(err)
+        res.json({code:1,tx:tx})
+    })
 
 }
