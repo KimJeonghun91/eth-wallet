@@ -7,8 +7,6 @@ var fs = require('fs')
 var util = require('util');
 var readFile = util.promisify(fs.readFile)
 
-
-
 const web3 = async (req, res, next) => {
     try {
         var wallet = await readFile("wallet.json")
@@ -17,6 +15,7 @@ const web3 = async (req, res, next) => {
         var address = keystore.getAddresses()
         var privateKey;
 
+        //private key 추출하기
         await keystore.keyFromPassword("123", (err, data) => {
             var key = keystore.exportPrivateKey(address.toString(), data)
             privateKey = '0x' + key
@@ -39,8 +38,6 @@ const web3 = async (req, res, next) => {
             next()
 
         })
-
-
 
 
     } catch (err) {

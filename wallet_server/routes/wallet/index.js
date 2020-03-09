@@ -15,6 +15,4 @@ router.post('/getBalance',wallet.getBalance)
 router.use('/sendEth',web3ProviderMiddleware)
 router.post('/sendEth',wallet.sendEth)
 
-router.use('/getPK',keyMiddleware)
-router.post('/getPK',wallet.getPK)
 module.exports = router
