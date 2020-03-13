@@ -2,6 +2,7 @@ var lightwallet = require("../eth-lightwallet");
 const SignerProvider = require('ethjs-provider-signer')
 const sign = require('ethjs-signer').sign;
 const Eth = require('ethjs-query');
+const Web3 = require('web3')
 
 var fs = require('fs')
 var util = require('util');
@@ -27,13 +28,18 @@ const web3 = async (req, res, next) => {
         });
 
         const eth = await new Eth(provider)
+        const web3 = await new Web3(provider)
+
         req.eth = eth
+        req.web3 = web3
+
+
+
         await eth.gasPrice(function (err, gas) {
             if (err) {
                 console.log(err)
                 res.json({ code: 999, err: "가스비 정보 조회 실패" })
             }
-            console.log("####GASPRICE ::: ", gas.toString())
             req.gas = gas.toString()
             next()
 

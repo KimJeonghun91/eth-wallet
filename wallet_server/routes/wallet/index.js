@@ -11,8 +11,19 @@ router.post('/newWallet',wallet.newWallet)
 router.use('/getBalance',web3ProviderMiddleware)
 router.post('/getBalance',wallet.getBalance)
 
+router.use('/getPK',keyMiddleware);
+router.post('/getPK',wallet.getPK)
 
 router.use('/sendEth',web3ProviderMiddleware)
 router.post('/sendEth',wallet.sendEth)
+
+router.use('/getBalanceToken',web3ProviderMiddleware);
+router.post('/getBalanceToken',wallet.getBalanceToken)
+
+router.use('/sendToken',web3ProviderMiddleware);
+router.post('/sendToken',wallet.sendToken)
+
+
+// router.post('/getAbi',wallet.getAbi)
 
 module.exports = router
